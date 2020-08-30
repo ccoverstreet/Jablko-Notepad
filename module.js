@@ -31,5 +31,9 @@ module.exports.save_note = async (req, res) => {
 module.exports.get_note = async (req, res) => {
 	const table_data = await jablko.user_db.get(`SELECT * FROM ${module_name} WHERE username=(?)`, [req.username]);
 
-	res.json({status: "good", note: table_data.note});
+	if (table_data.note == undefined) {
+		res.json({status: "fail", note: "Couldn't find any notes"});
+	} else {
+		res.json({status: "good", note: table_data.note});
+	}
 }

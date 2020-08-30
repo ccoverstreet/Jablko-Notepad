@@ -1,0 +1,59 @@
+<script>
+	const $MODULE_NAME = {
+		save_note: async () => {
+			const note_data = document.getElementById("$MODULE_NAME_textedit").innerText;
+
+			const raw_response = await fetch("/jablko_modules/$MODULE_NAME/save_note", {
+				method: "POST", 
+				headers: {
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify({note: note_data})
+			})
+				.catch((error) => {
+					console.log("Unable to save notes");
+				});
+
+			const response = await raw_response.json();
+			console.log(response);
+		},
+		get_note: async() => {
+			const raw_response = await fetch("/jablko_modules/$MODULE_NAME/get_note", {
+				method: "POST"
+			})
+				.catch((error) => {
+					console.log("Unable to get notes");
+				});
+
+			const response = await raw_response.json();
+
+			document.getElementById("$MODULE_NAME_textedit").innerText = response.note;
+
+		}
+	}
+
+	document.addEventListener("DOMContentLoaded", (event) => {
+		$MODULE_NAME.get_note();
+	});
+</script>
+<div id="$MODULE_NAME" class="module_card">
+	<div class="module_header">
+		<h1>Notepad</h1>
+		<svg class="module_icon" viewBox="0 0 150 150">
+			<path d="M 20 20 H 130 V 130 H 20 V 20" fill="transparent" stroke="#0097e6" stroke-width="20px" stroke-linecap="round" stroke-linejoin="round"/>
+			<path d="M 40 40 H 110" stroke="#0097e6" stroke-width="10px" stroke-linecap="round"/>
+			<path d="M 40 70 H 110" stroke="#0097e6" stroke-width="10px" stroke-linecap="round"/>
+			<path d="M 40 90 H 110" stroke="#0097e6" stroke-width="10px" stroke-linecap="round"/>
+			<path d="M 40 110 H 110" stroke="#0097e6" stroke-width="10px" stroke-linecap="round"/>
+		</svg>
+	</div>
+
+	<hr>
+
+	<div id="$MODULE_NAME_textedit" contenteditable="true" style="margin: 15px; padding: 5px; border-style: solid; border-width: 2px; border-color: #000000; border-radius: 5px;"></div>
+
+	<div style="display: flex; justify-content: flex-end; margin-right: 15px;">
+		<button onclick="$MODULE_NAME.save_note()" style="background-color: var(--color-green); color: #ffffff;">Save</button>
+	</div>
+</div>

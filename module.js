@@ -22,14 +22,14 @@ module.exports.generate_card = async function generate_card() {
 }
 
 module.exports.save_note = async (req, res) => {
-	jablko.user_db.run(`INSERT OR IGNORE INTO Jablko_Notepad (username, note) VALUES (?, ?)`, [req.username, req.body.note]);
-	jablko.user_db.run(`UPDATE Jablko_Notepad SET note=(?) WHERE username=(?)`, [req.body.note, req.username]);
+	jablko.user_db.run(`INSERT OR IGNORE INTO ${module_name} (username, note) VALUES (?, ?)`, [req.username, req.body.note]);
+	jablko.user_db.run(`UPDATE ${module_name} SET note=(?) WHERE username=(?)`, [req.body.note, req.username]);
 	
 	res.json({status: "good", message: "Saved Note"});
 }
 
 module.exports.get_note = async (req, res) => {
-	const table_data = await jablko.user_db.get("SELECT * FROM Jablko_Notepad WHERE username=(?)", [req.username]);
+	const table_data = await jablko.user_db.get(`SELECT * FROM ${module_name} WHERE username=(?)`, [req.username]);
 
 	res.json({status: "good", note: table_data.note});
 }

@@ -18,12 +18,12 @@ note TEXT
 module.exports.permission_level = 0
 
 module.exports.generate_card = async function generate_card(req) {
-	return (await fs.readFile(`${__dirname}/jablko_notepad.html`, "utf8")).replace(/\$MODULE_NAME/g, module_name).replace(/\$USERNAME/g, req.user_data.username);
+	return (await fs.readFile(`${__dirname}/jablko_notepad.html`, "utf8")).replace(/\$MODULE_NAME/g, module_name).replace(/\$USERNAME/g, req.user_data.first_name);
 }
 
 module.exports.save_note = async (req, res) => {
 	jablko.user_db.run(`INSERT OR IGNORE INTO ${module_name} (username, note) VALUES (?, ?)`, [req.user_data.username, req.body.note]);
-	jablko.user_db.run(`UPDATE ${module_name} SET note=(?) WHERE username=(?)`, [req.body.note, req.username]);
+	jablko.user_db.run(`UPDATE ${module_name} SET note=(?) WHERE username=(?)`, [req.body.note, req.user_data.username]);
 	
 	res.json({status: "good", message: "Saved Note"});
 }

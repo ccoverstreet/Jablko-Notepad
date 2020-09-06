@@ -18,7 +18,19 @@ note TEXT
 module.exports.permission_level = 0
 
 module.exports.generate_card = async function generate_card(req) {
-	return (await fs.readFile(`${__dirname}/jablko_notepad.html`, "utf8")).replace(/\$MODULE_NAME/g, module_name).replace(/\$USERNAME/g, req.user_data.first_name);
+	const loaded_notes = await jablko.user_db.get(`SELECT * FROM ${module_name} WHERE username=(?)`, [req.user_data.username]);
+	
+	var notes = undefined;
+	if (loaded_notes != undefined) {
+		notes = loaded_notes.note
+	} else {
+		notes = "";
+	}
+
+	return (await fs.readFile(`${__dirname}/jablko_notepad.html`, "utf8"))
+		.replace(/\$MODULE_NAME/g, module_name)
+		.replace(/\$USERNAME/g, req.user_data.first_name)
+		.replace(/\$NOTES/, notes);
 }
 
 module.exports.save_note = async (req, res) => {

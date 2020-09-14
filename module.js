@@ -29,6 +29,7 @@ module.exports.generate_card = async function generate_card(req) {
 
 	return (await fs.readFile(`${__dirname}/jablko_notepad.html`, "utf8"))
 		.replace(/\$MODULE_NAME/g, module_name)
+		.replace(/\$MODULE_LABEL/g, module_config.label)
 		.replace(/\$USERNAME/g, req.user_data.first_name)
 		.replace(/\$NOTES/, notes);
 }

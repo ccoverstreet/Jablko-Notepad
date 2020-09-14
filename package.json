@@ -15,7 +15,7 @@
 	"bugs": {
 		"url": "https://github.com/ccoverstreet/Jablko-Notepad/issues"
 	},
-	"homepage": "https://github.com/ccoverstreet/Jablko-Notepad#readme"
+	"homepage": "https://github.com/ccoverstreet/Jablko-Notepad#readme",
 	"jablko": {
 		"label": "Notepad"
 	}
